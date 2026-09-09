@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mysterious Chest</title>
+    <style>
+        body {
+            background-color: #1a1528;
+            color: #f3e5ab;
+            font-family: 'Georgia', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background: #2a2238;
+            border: 2px solid #c5a059;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        h1 {
+            color: #e6c687;
+            margin-top: 0;
+        }
+        .parchment {
+            background: #fff8dc;
+            color: #2b1d0c;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 0.95em;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        }
+        .chest-container {
+            font-size: 80px;
+            margin: 15px 0;
+            transition: transform 0.3s ease;
+        }
+        .dials {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .dial {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .dial button {
+            background: #c5a059;
+            color: #1a1528;
+            border: none;
+            width: 40px;
+            height: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .dial button:hover {
+            background: #e6c687;
+        }
+        .dial-value {
+            font-size: 28px;
+            font-weight: bold;
+            width: 40px;
+            height: 45px;
+            line-height: 45px;
+            background: #110d1b;
+            border: 1px solid #c5a059;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+        .unlock-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .unlock-btn:hover {
+            background: #45a049;
+        }
+        .reward-modal {
+            display: none;
+            background: linear-gradient(135deg, #fff8dc 0%, #ffe4e1 100%);
+            color: #2b1d0c;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 20px;
+            animation: fadeIn 0.8s ease-in-out forwards;
+            border: 2px solid #c5a059;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .reward-modal h2 {
+            color: #d4536f;
+            font-size: 28px;
+            margin-top: 0;
+        }
+        .reward-modal p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+        .reward-message {
+            font-style: italic;
+            color: #8b4a5c;
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        .reward-coupon {
+            background: #2a2238;
+            color: #f3e5ab;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px dashed #c5a059;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .error {
+            color: #ff6b6b;
+            margin-top: 10px;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>The Cipher Chest</h1>
+    
+    <div class="parchment">
+        <p style="text-align: center; font-weight: bold; margin-top: 0;">Solve the clues to find the 4-digit combination:</p>
+        <ol style="padding-left: 20px;">
+            <li><strong>Digit 1:</strong> The only even prime number.</li>
+            <li><strong>Digit 2:</strong> Triangle sides &times; letters in "LOVE". Take the last digit.</li>
+            <li><strong>Digit 3:</strong> Next number in sequence: <code>1, 1, 2, 3, 5, 8, ...</code> (Take its first digit).</li>
+            <li><strong>Digit 4:</strong> Letters in "YOU AND ME" minus 3.</li>
+        </ol>
+    </div>
+
+    <div class="chest-container" id="chest">🔒🧰</div>
+
+    <div class="dials">
+        <div class="dial">
+            <button onclick="changeDial(0, 1)">▲</button>
+            <div class="dial-value" id="digit-0">0</div>
+            <button onclick="changeDial(0, -1)">▼</button>
+        </div>
+        <div class="dial">
+            <button onclick="changeDial(1, 1)">▲</button>
+            <div class="dial-value" id="digit-1">0</div>
+            <button onclick="changeDial(1, -1)">▼</button>
+        </div>
+        <div class="dial">
+            <button onclick="changeDial(2, 1)">▲</button>
+            <div class="dial-value" id="digit-2">0</div>
+            <button onclick="changeDial(2, -1)">▼</button>
+        </div>
+        <div class="dial">
+            <button onclick="changeDial(3, 1)">▲</button>
+            <div class="dial-value" id="digit-3">0</div>
+            <button onclick="changeDial(3, -1)">▼</button>
+        </div>
+    </div>
+
+    <button class="unlock-btn" onclick="checkCode()">Open Chest</button>
+    <div class="error" id="error-msg">The lock doesn't budge. Try another combination!</div>
+
+    <div class="reward-modal" id="reward">
+        <h2>💚 You Unlocked My Heart 💚</h2>
+        <p class="reward-message">Just like solving this puzzle brought you joy, you bring joy to every moment of my life. Thank you for being the one I love.</p>
+        
+        <div class="reward-coupon">
+            ☕ FREE MATCHA ☕<br>
+            Enjoy a complimentary matcha beverage on me, my love.
+        </div>
+        
+        <p style="color: #8b4a5c; font-weight: bold;">With all my love,<br>Your Admirer 💕</p>
+    </div>
+</div>
+
+<script>
+    const correctCode = [2, 2, 1, 5];
+    let currentCode = [0, 0, 0, 0];
+
+    function changeDial(index, direction) {
+        currentCode[index] = (currentCode[index] + direction + 10) % 10;
+        document.getElementById(`digit-${index}`).innerText = currentCode[index];
+    }
+
+    function checkCode() {
+        const isCorrect = currentCode.every((val, idx) => val === correctCode[idx]);
+        const errorMsg = document.getElementById('error-msg');
+        const rewardModal = document.getElementById('reward');
+        const chest = document.getElementById('chest');
+
+        if (isCorrect) {
+            errorMsg.style.display = 'none';
+            chest.innerText = '🔓🎁';
+            chest.style.transform = 'scale(1.2)';
+            rewardModal.style.display = 'block';
+        } else {
+            errorMsg.style.display = 'block';
+            chest.style.transform = 'shake';
+        }
+    }
+</script>
+
+</body>
+</html>
