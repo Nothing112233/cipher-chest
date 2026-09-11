@@ -253,22 +253,8 @@
             transition: transform 0.2s, filter 0.2s;
             position: relative;
             z-index: 1;
-        }
-
-        .tulip-stem {
-            width: 2px;
-            height: 70px;
-            background: linear-gradient(to top, #1a4d1a, #2d7a2d);
-            position: relative;
-            z-index: 0;
-        }
-
-        .tulip-flower {
             font-size: 32px;
             line-height: 1;
-            margin-bottom: -3px;
-            position: relative;
-            z-index: 2;
         }
 
         .tulip:hover {
@@ -479,7 +465,6 @@
 <script>
     const core = document.getElementById('core');
     const tulipsContainer = document.getElementById('tulipsContainer');
-    const stemsBundle = document.getElementById('stemsBundle');
     const messageModal = document.getElementById('messageModal');
     const particlesContainer = document.getElementById('particles');
     
@@ -489,18 +474,6 @@
 
     // Create neat tulip pyramid bouquet
     function createTulips() {
-        // Create stems in bundle
-        for (let i = 0; i < 25; i++) {
-            const stem = document.createElement('div');
-            stem.className = 'stem-line';
-            const angle = (360 / 25) * i;
-            const xOffset = Math.cos((angle * Math.PI) / 180) * 20;
-            stem.style.left = (40 + xOffset) + 'px';
-            stem.style.transform = `rotate(${angle}deg)`;
-            stem.style.transformOrigin = `0 100%`;
-            stemsBundle.appendChild(stem);
-        }
-
         // Neat pyramid arrangement
         const rows = [
             { count: 3, spacing: 45 },      // Row 1 - top (3 tulips)
@@ -523,16 +496,7 @@
             for (let i = 0; i < row.count && tulipIndex < numberOfTulips; i++) {
                 const tulip = document.createElement('div');
                 tulip.className = 'tulip';
-                
-                const stemDiv = document.createElement('div');
-                stemDiv.className = 'tulip-stem';
-                
-                const flowerDiv = document.createElement('div');
-                flowerDiv.className = 'tulip-flower';
-                flowerDiv.innerHTML = '🌷';
-                
-                tulip.appendChild(stemDiv);
-                tulip.appendChild(flowerDiv);
+                tulip.innerHTML = '🌷';
                 
                 tulip.dataset.index = tulipIndex;
                 tulip.onclick = (e) => selectTulip(tulipIndex, e);
@@ -552,15 +516,15 @@
 
         if (index === correctTulip) {
             unlocked = true;
-            event.target.closest('.tulip').style.opacity = '0';
+            event.target.style.opacity = '0';
             triggerExplosion();
             setTimeout(() => {
                 messageModal.classList.add('show');
             }, 800);
         } else {
-            event.target.closest('.tulip').classList.add('wrong');
+            event.target.classList.add('wrong');
             setTimeout(() => {
-                event.target.closest('.tulip').classList.remove('wrong');
+                event.target.classList.remove('wrong');
             }, 400);
         }
     }
