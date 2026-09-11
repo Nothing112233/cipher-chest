@@ -255,6 +255,7 @@
             z-index: 1;
             font-size: 32px;
             line-height: 1;
+            user-select: none;
         }
 
         .tulip:hover {
@@ -282,6 +283,7 @@
             width: 80px;
             height: 110px;
             z-index: 0;
+            pointer-events: none;
         }
 
         .stem-line {
@@ -465,15 +467,28 @@
 <script>
     const core = document.getElementById('core');
     const tulipsContainer = document.getElementById('tulipsContainer');
+    const stemsBundle = document.getElementById('stemsBundle');
     const messageModal = document.getElementById('messageModal');
     const particlesContainer = document.getElementById('particles');
     
-    const numberOfTulips = 20;
-    const correctTulip = Math.floor(Math.random() * numberOfTulips);
+    let correctTulip = -1;
     let unlocked = false;
+    let allTulips = [];
 
     // Create neat tulip pyramid bouquet
     function createTulips() {
+        // First create stem lines
+        for (let i = 0; i < 25; i++) {
+            const stem = document.createElement('div');
+            stem.className = 'stem-line';
+            const angle = (360 / 25) * i;
+            const xOffset = Math.cos((angle * Math.PI) / 180) * 20;
+            stem.style.left = (40 + xOffset) + 'px';
+            stem.style.transform = `rotate(${angle}deg)`;
+            stem.style.transformOrigin = `0 100%`;
+            stemsBundle.appendChild(stem);
+        }
+
         // Neat pyramid arrangement
         const rows = [
             { count: 3, spacing: 45 },      // Row 1 - top (3 tulips)
@@ -493,26 +508,35 @@
             rowContainer.style.width = (row.count * row.spacing) + 'px';
             rowContainer.style.bottom = yOffset + 'px';
 
-            for (let i = 0; i < row.count && tulipIndex < numberOfTulips; i++) {
+            for (let i = 0; i < row.count; i++) {
                 const tulip = document.createElement('div');
                 tulip.className = 'tulip';
                 tulip.innerHTML = '🌷';
-                
                 tulip.dataset.index = tulipIndex;
-                tulip.onclick = (e) => selectTulip(tulipIndex, e);
+                
+                tulip.addEventListener('click', function(e) {
+                    handleTulipClick(tulipIndex, e);
+                });
 
                 rowContainer.appendChild(tulip);
+                allTulips.push(tulip);
                 tulipIndex++;
             }
 
             tulipsContainer.appendChild(rowContainer);
             yOffset += 65;
         }
+
+        // Set random correct tulip after all tulips are created
+        correctTulip = Math.floor(Math.random() * allTulips.length);
+        console.log('Correct tulip index:', correctTulip);
     }
 
-    // Handle tulip selection
-    function selectTulip(index, event) {
+    // Handle tulip click
+    function handleTulipClick(index, event) {
         if (unlocked) return;
+
+        console.log('Clicked tulip:', index, 'Correct tulip:', correctTulip);
 
         if (index === correctTulip) {
             unlocked = true;
