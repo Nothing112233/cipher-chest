@@ -12,7 +12,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background: linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
             color: #fff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
@@ -24,7 +24,7 @@
 
         .container {
             text-align: center;
-            max-width: 700px;
+            max-width: 900px;
             width: 100%;
         }
 
@@ -43,65 +43,166 @@
             font-style: italic;
         }
 
+        .game-area {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 60px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        /* REACTOR STYLES */
         .reactor-container {
             position: relative;
-            width: 300px;
-            height: 300px;
-            margin: 0 auto 50px;
+            width: 350px;
+            height: 400px;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
         }
 
         .reactor {
             position: relative;
-            width: 200px;
+            width: 300px;
+            height: 350px;
+            background: linear-gradient(135deg, #2a2a3e, #1a1a2a);
+            border: 3px solid #444;
+            border-radius: 10px 10px 0 0;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.3), inset 0 0 30px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Cooling Towers */
+        .cooling-tower {
+            position: absolute;
+            bottom: 0;
+            width: 60px;
             height: 200px;
-            background: radial-gradient(circle at 30% 30%, #00ff88, #00cc66);
+            background: linear-gradient(to right, #3a3a4a 0%, #4a4a5a 50%, #3a3a4a 100%);
+            border: 2px solid #555;
+            border-top: none;
+            transform: perspective(500px) rotateY(0deg);
+        }
+
+        .cooling-tower::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 35px;
+            background: radial-gradient(ellipse at center, #4a4a5a, #3a3a4a);
+            border: 2px solid #555;
+            border-radius: 50% 50% 0 0;
+        }
+
+        .tower-left {
+            left: 30px;
+        }
+
+        .tower-right {
+            right: 30px;
+        }
+
+        /* Core/Reactor Center */
+        .core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle at 30% 30%, #00ff88, #00cc66, #006633);
             border-radius: 50%;
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.8), inset 0 0 30px rgba(0, 100, 50, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 80px;
-            animation: pulse 2s ease-in-out infinite;
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.9), 
+                        0 0 80px rgba(0, 255, 136, 0.6),
+                        inset 0 0 40px rgba(0, 100, 50, 0.7);
+            animation: corePulse 2s ease-in-out infinite;
         }
 
-        @keyframes pulse {
+        @keyframes corePulse {
             0%, 100% {
-                box-shadow: 0 0 30px rgba(0, 255, 136, 0.8), inset 0 0 30px rgba(0, 100, 50, 0.5);
-                transform: scale(1);
+                box-shadow: 0 0 40px rgba(0, 255, 136, 0.9), 
+                            0 0 80px rgba(0, 255, 136, 0.6),
+                            inset 0 0 40px rgba(0, 100, 50, 0.7);
+                transform: translate(-50%, -50%) scale(1);
             }
             50% {
-                box-shadow: 0 0 50px rgba(0, 255, 136, 1), inset 0 0 40px rgba(0, 150, 70, 0.7);
-                transform: scale(1.05);
+                box-shadow: 0 0 60px rgba(0, 255, 136, 1), 
+                            0 0 100px rgba(0, 255, 136, 0.8),
+                            inset 0 0 50px rgba(0, 150, 70, 0.9);
+                transform: translate(-50%, -50%) scale(1.08);
             }
         }
 
-        .reactor.exploding {
-            animation: explode 0.6s ease-out forwards;
+        .core.exploding {
+            animation: coreExplode 0.8s ease-out forwards;
         }
 
-        @keyframes explode {
+        @keyframes coreExplode {
             0% {
-                transform: scale(1);
-                box-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 60px rgba(0, 255, 136, 1), 
+                            0 0 100px rgba(0, 255, 136, 0.8);
             }
             50% {
-                transform: scale(1.3);
-                box-shadow: 0 0 100px rgba(255, 100, 0, 1);
+                transform: translate(-50%, -50%) scale(1.5);
+                box-shadow: 0 0 100px rgba(255, 100, 0, 1), 
+                            0 0 150px rgba(255, 100, 0, 0.8);
             }
             100% {
-                transform: scale(0.3);
-                box-shadow: 0 0 80px rgba(255, 200, 0, 0.6);
+                transform: translate(-50%, -50%) scale(0.2);
+                box-shadow: 0 0 80px rgba(255, 200, 0, 0.4), 
+                            0 0 120px rgba(255, 100, 0, 0.2);
                 background: radial-gradient(circle at 30% 30%, #ffaa00, #ff6600);
             }
+        }
+
+        /* Control Panel */
+        .control-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            height: 60px;
+            background: linear-gradient(180deg, #2a2a3e, #1a1a2a);
+            border: 1px solid #555;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .control-light {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #ff4444;
+            box-shadow: 0 0 10px rgba(255, 68, 68, 0.8);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .control-dial {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #666;
+            border-radius: 50%;
+            background: radial-gradient(circle, #555, #333);
         }
 
         .explosion-particles {
             position: absolute;
             width: 100%;
             height: 100%;
+            pointer-events: none;
         }
 
         .particle {
@@ -113,35 +214,45 @@
             opacity: 0;
         }
 
+        /* BOUQUET STYLES */
         .bouquet-container {
             position: relative;
-            width: 400px;
+            width: 280px;
             height: 400px;
-            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .roses-circle {
+        .bouquet-wrapper {
             position: relative;
+            width: 250px;
+            height: 280px;
+            margin-bottom: 20px;
+        }
+
+        .roses-layer {
+            position: absolute;
             width: 100%;
             height: 100%;
         }
 
         .rose {
             position: absolute;
-            width: 60px;
-            height: 60px;
             cursor: pointer;
             display: flex;
             justify-content: center;
-            align-items: center;
-            font-size: 40px;
-            filter: drop-shadow(0 0 5px rgba(255, 105, 180, 0.5));
+            align-items: flex-end;
+            filter: drop-shadow(0 2px 4px rgba(255, 105, 180, 0.3));
             transition: transform 0.2s, filter 0.2s;
+            font-size: 35px;
+            line-height: 1;
         }
 
         .rose:hover {
-            transform: scale(1.15);
-            filter: drop-shadow(0 0 15px rgba(255, 105, 180, 1));
+            transform: scale(1.15) translateY(-5px);
+            filter: drop-shadow(0 4px 12px rgba(255, 105, 180, 0.8));
+            z-index: 100;
         }
 
         .rose.wrong {
@@ -150,10 +261,56 @@
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
         }
 
+        /* Stems */
+        .stems {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 100px;
+            background: linear-gradient(to bottom, 
+                rgba(34, 139, 34, 0.9) 0%, 
+                rgba(34, 139, 34, 0.8) 50%, 
+                rgba(34, 139, 34, 0.7) 100%);
+            border-radius: 50% 50% 0 0 / 30% 30% 0 0;
+            clip-path: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
+        }
+
+        /* Wrapper/Base */
+        .wrapper {
+            width: 120px;
+            height: 50px;
+            background: linear-gradient(180deg, #d4af37, #b8956a, #8b7355);
+            border-radius: 5px 5px 8px 8px;
+            border: 2px solid #a0826d;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4), inset 0 -2px 5px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .wrapper::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 10%;
+            width: 80%;
+            height: 8px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 50%;
+        }
+
+        .hint {
+            margin-top: 30px;
+            font-size: 0.95em;
+            color: #ffb6d9;
+        }
+
+        /* MODAL STYLES */
         .message-modal {
             display: none;
             position: fixed;
@@ -161,7 +318,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -230,10 +387,20 @@
             transform: scale(1.05);
         }
 
-        .hint {
-            margin-top: 30px;
-            font-size: 0.95em;
-            color: #ffb6d9;
+        @media (max-width: 768px) {
+            .game-area {
+                gap: 30px;
+            }
+            
+            .reactor-container {
+                width: 280px;
+                height: 320px;
+            }
+
+            .reactor {
+                width: 250px;
+                height: 280px;
+            }
         }
     </style>
 </head>
@@ -243,16 +410,36 @@
     <h1>💚 The Reactor of Love 💚</h1>
     <p class="subtitle">Find the right rose to unlock the magic...</p>
 
-    <div class="reactor-container">
-        <div class="reactor" id="reactor">⚛️</div>
-        <div class="explosion-particles" id="particles"></div>
-    </div>
+    <div class="game-area">
+        <!-- REACTOR -->
+        <div class="reactor-container">
+            <div class="reactor">
+                <div class="cooling-tower tower-left"></div>
+                <div class="cooling-tower tower-right"></div>
+                <div class="control-panel">
+                    <div class="control-light"></div>
+                    <div class="control-dial"></div>
+                    <div class="control-light"></div>
+                    <div class="control-dial"></div>
+                    <div class="control-light"></div>
+                </div>
+                <div class="core" id="core">⚛️</div>
+            </div>
+            <div class="explosion-particles" id="particles"></div>
+        </div>
 
-    <div class="bouquet-container">
-        <div class="roses-circle" id="rosesCircle"></div>
+        <!-- BOUQUET -->
+        <div class="bouquet-container">
+            <div class="bouquet-wrapper">
+                <div class="bouquet-wrapper">
+                    <div class="roses-layer" id="rosesLayer"></div>
+                    <div class="stems"></div>
+                </div>
+            </div>
+            <div class="wrapper"></div>
+            <div class="hint">Click on a rose 🌹</div>
+        </div>
     </div>
-
-    <div class="hint">Click on a rose to find the special one 🌹</div>
 </div>
 
 <div class="message-modal" id="messageModal">
@@ -266,8 +453,8 @@
 </div>
 
 <script>
-    const reactor = document.getElementById('reactor');
-    const rosesCircle = document.getElementById('rosesCircle');
+    const core = document.getElementById('core');
+    const rosesLayer = document.getElementById('rosesLayer');
     const messageModal = document.getElementById('messageModal');
     const particlesContainer = document.getElementById('particles');
     
@@ -275,26 +462,52 @@
     const correctRose = Math.floor(Math.random() * numberOfRoses);
     let unlocked = false;
 
-    // Create roses in a circular arrangement
+    // Create realistic bouquet arrangement
     function createRoses() {
-        const radius = 150;
-        const angleStep = (2 * Math.PI) / numberOfRoses;
+        const positions = [
+            // Front center roses (largest, most prominent)
+            { x: 125, y: 200, size: 40 },
+            { x: 105, y: 180, size: 38 },
+            { x: 145, y: 185, size: 38 },
+            { x: 125, y: 160, size: 36 },
+            
+            // Second layer
+            { x: 85, y: 165, size: 35 },
+            { x: 165, y: 170, size: 35 },
+            { x: 95, y: 145, size: 34 },
+            { x: 155, y: 150, size: 34 },
+            
+            // Third layer
+            { x: 70, y: 120, size: 32 },
+            { x: 180, y: 125, size: 32 },
+            { x: 110, y: 100, size: 31 },
+            { x: 140, y: 105, size: 31 },
+            
+            // Top roses
+            { x: 50, y: 80, size: 30 },
+            { x: 200, y: 85, size: 30 },
+            { x: 125, y: 60, size: 29 },
+            
+            // Side and accent roses
+            { x: 30, y: 150, size: 28 },
+            { x: 220, y: 155, size: 28 },
+            { x: 60, y: 200, size: 30 },
+            { x: 190, y: 205, size: 30 },
+            { x: 125, y: 220, size: 32 }
+        ];
 
-        for (let i = 0; i < numberOfRoses; i++) {
-            const angle = angleStep * i;
-            const x = Math.cos(angle) * radius;
-            const y = Math.sin(angle) * radius;
-
+        positions.forEach((pos, index) => {
             const rose = document.createElement('div');
             rose.className = 'rose';
             rose.innerHTML = '🌹';
-            rose.style.left = `calc(50% + ${x}px - 30px)`;
-            rose.style.top = `calc(50% + ${y}px - 30px)`;
-            rose.dataset.index = i;
-            rose.onclick = (e) => selectRose(i, e);
+            rose.style.left = pos.x + 'px';
+            rose.style.top = pos.y + 'px';
+            rose.style.fontSize = pos.size + 'px';
+            rose.dataset.index = index;
+            rose.onclick = (e) => selectRose(index, e);
 
-            rosesCircle.appendChild(rose);
-        }
+            rosesLayer.appendChild(rose);
+        });
     }
 
     // Handle rose selection
@@ -307,7 +520,7 @@
             triggerExplosion();
             setTimeout(() => {
                 messageModal.classList.add('show');
-            }, 600);
+            }, 800);
         } else {
             event.target.closest('.rose').classList.add('wrong');
             setTimeout(() => {
@@ -318,17 +531,17 @@
 
     // Explosion effect
     function triggerExplosion() {
-        reactor.classList.add('exploding');
+        core.classList.add('exploding');
         createExplosionParticles();
     }
 
     // Create explosion particles
     function createExplosionParticles() {
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < 20; i++) {
             const particle = document.createElement('div');
             particle.className = 'particle';
             const angle = (Math.random() * Math.PI * 2);
-            const velocity = 3 + Math.random() * 5;
+            const velocity = 4 + Math.random() * 6;
             const vx = Math.cos(angle) * velocity;
             const vy = Math.sin(angle) * velocity;
 
@@ -343,9 +556,9 @@
                 x += vx;
                 y += vy;
                 particle.style.transform = `translate(${x}px, ${y}px)`;
-                particle.style.opacity = Math.max(0, 1 - (Math.abs(x) + Math.abs(y)) / 300);
+                particle.style.opacity = Math.max(0, 1 - (Math.abs(x) + Math.abs(y)) / 350);
 
-                if (Math.abs(x) < 200 && Math.abs(y) < 200) {
+                if (Math.abs(x) < 250 && Math.abs(y) < 250) {
                     requestAnimationFrame(animate);
                 } else {
                     particle.remove();
