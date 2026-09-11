@@ -222,40 +222,61 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: flex-end;
         }
 
         .bouquet-wrapper {
             position: relative;
-            width: 250px;
-            height: 280px;
+            width: 280px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .tulips-container {
+            position: relative;
+            width: 200px;
+            height: 250px;
             margin-bottom: 20px;
         }
 
-        .roses-layer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .rose {
+        .tulip {
             position: absolute;
             cursor: pointer;
             display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            filter: drop-shadow(0 2px 4px rgba(255, 105, 180, 0.3));
+            flex-direction: column;
+            align-items: center;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
             transition: transform 0.2s, filter 0.2s;
-            font-size: 35px;
-            line-height: 1;
+            bottom: 0;
         }
 
-        .rose:hover {
-            transform: scale(1.15) translateY(-5px);
-            filter: drop-shadow(0 4px 12px rgba(255, 105, 180, 0.8));
+        .tulip-stem {
+            width: 2px;
+            height: 80px;
+            background: linear-gradient(to top, #2d5016, #3a6b1f);
+            margin-bottom: -2px;
+        }
+
+        .tulip-flower {
+            width: 24px;
+            height: 32px;
+            font-size: 28px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tulip:hover {
+            transform: scale(1.2) translateY(-10px);
+            filter: drop-shadow(0 4px 12px rgba(255, 100, 150, 0.8));
             z-index: 100;
         }
 
-        .rose.wrong {
+        .tulip.wrong {
             animation: shake 0.4s ease-in-out;
         }
 
@@ -265,20 +286,22 @@
             75% { transform: translateX(8px); }
         }
 
-        /* Stems */
-        .stems {
+        /* Stems Bundle */
+        .stems-bundle {
             position: absolute;
-            bottom: 0;
+            bottom: 60px;
             left: 50%;
             transform: translateX(-50%);
-            width: 60px;
-            height: 100px;
-            background: linear-gradient(to bottom, 
-                rgba(34, 139, 34, 0.9) 0%, 
-                rgba(34, 139, 34, 0.8) 50%, 
-                rgba(34, 139, 34, 0.7) 100%);
-            border-radius: 50% 50% 0 0 / 30% 30% 0 0;
-            clip-path: polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%);
+            width: 50px;
+            height: 120px;
+        }
+
+        .stem-line {
+            position: absolute;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(to top, #2d5016, #3a6b1f);
+            opacity: 0.7;
         }
 
         /* Wrapper/Base */
@@ -290,7 +313,7 @@
             border: 2px solid #a0826d;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4), inset 0 -2px 5px rgba(0, 0, 0, 0.3);
             position: relative;
-            z-index: 1;
+            z-index: 10;
         }
 
         .wrapper::before {
@@ -305,7 +328,7 @@
         }
 
         .hint {
-            margin-top: 30px;
+            margin-top: 20px;
             font-size: 0.95em;
             color: #ffb6d9;
         }
@@ -408,7 +431,7 @@
 
 <div class="container">
     <h1>💚 The Reactor of Love 💚</h1>
-    <p class="subtitle">Find the right rose to unlock the magic...</p>
+    <p class="subtitle">Find the right tulip to unlock the magic...</p>
 
     <div class="game-area">
         <!-- REACTOR -->
@@ -428,16 +451,14 @@
             <div class="explosion-particles" id="particles"></div>
         </div>
 
-        <!-- BOUQUET -->
+        <!-- TULIP BOUQUET -->
         <div class="bouquet-container">
             <div class="bouquet-wrapper">
-                <div class="bouquet-wrapper">
-                    <div class="roses-layer" id="rosesLayer"></div>
-                    <div class="stems"></div>
-                </div>
+                <div class="tulips-container" id="tulipsContainer"></div>
+                <div class="stems-bundle" id="stemsBundle"></div>
             </div>
             <div class="wrapper"></div>
-            <div class="hint">Click on a rose 🌹</div>
+            <div class="hint">Click on a tulip 🌷</div>
         </div>
     </div>
 </div>
@@ -445,7 +466,7 @@
 <div class="message-modal" id="messageModal">
     <div class="message-content">
         <h2>💕 My Love 💕</h2>
-        <p>In this moment, surrounded by roses and the glow of our hearts, I want you to know how much you mean to me. You are my everything, my forever, my reason to smile.</p>
+        <p>In this moment, surrounded by tulips and the glow of our hearts, I want you to know how much you mean to me. You are my everything, my forever, my reason to smile.</p>
         <p style="font-size: 1.1em; margin-top: 25px;">Let's escape together, grab your favorite snacks and drink, and lose ourselves in our movie. Just you and me, princess.</p>
         <p style="font-size: 1.3em; margin-top: 25px;">I love you so much. 😘❣️</p>
         <button class="close-modal" onclick="closeModal()">Close Your Eyes & Kiss Me 💋</button>
@@ -454,77 +475,108 @@
 
 <script>
     const core = document.getElementById('core');
-    const rosesLayer = document.getElementById('rosesLayer');
+    const tulipsContainer = document.getElementById('tulipsContainer');
+    const stemsBundle = document.getElementById('stemsBundle');
     const messageModal = document.getElementById('messageModal');
     const particlesContainer = document.getElementById('particles');
     
-    const numberOfRoses = 20;
-    const correctRose = Math.floor(Math.random() * numberOfRoses);
+    const numberOfTulips = 20;
+    const correctTulip = Math.floor(Math.random() * numberOfTulips);
     let unlocked = false;
 
-    // Create realistic bouquet arrangement
-    function createRoses() {
+    // Tulip colors for variety
+    const tulipColors = ['🌷', '🌷', '🌷', '🌷', '🌷'];
+
+    // Create neat tulip bouquet
+    function createTulips() {
+        // Create stems in the bundle
+        const stemCount = 20;
+        for (let i = 0; i < stemCount; i++) {
+            const stem = document.createElement('div');
+            stem.className = 'stem-line';
+            const angle = (360 / stemCount) * i;
+            const offset = Math.cos((angle * Math.PI) / 180) * 15;
+            stem.style.left = (25 + offset) + 'px';
+            stem.style.transform = `rotate(${angle}deg)`;
+            stem.style.transformOrigin = `0 100%`;
+            stemsBundle.appendChild(stem);
+        }
+
+        // Create tulips arranged in neat rows
         const positions = [
-            // Front center roses (largest, most prominent)
-            { x: 125, y: 200, size: 40 },
-            { x: 105, y: 180, size: 38 },
-            { x: 145, y: 185, size: 38 },
-            { x: 125, y: 160, size: 36 },
-            
-            // Second layer
-            { x: 85, y: 165, size: 35 },
-            { x: 165, y: 170, size: 35 },
-            { x: 95, y: 145, size: 34 },
-            { x: 155, y: 150, size: 34 },
-            
-            // Third layer
-            { x: 70, y: 120, size: 32 },
-            { x: 180, y: 125, size: 32 },
-            { x: 110, y: 100, size: 31 },
-            { x: 140, y: 105, size: 31 },
-            
-            // Top roses
-            { x: 50, y: 80, size: 30 },
-            { x: 200, y: 85, size: 30 },
-            { x: 125, y: 60, size: 29 },
-            
-            // Side and accent roses
-            { x: 30, y: 150, size: 28 },
-            { x: 220, y: 155, size: 28 },
-            { x: 60, y: 200, size: 30 },
-            { x: 190, y: 205, size: 30 },
-            { x: 125, y: 220, size: 32 }
+            // Top row (3 tulips)
+            { x: 88, y: 30 },
+            { x: 100, y: 10 },
+            { x: 112, y: 30 },
+
+            // Second row (4 tulips)
+            { x: 76, y: 60 },
+            { x: 88, y: 50 },
+            { x: 112, y: 50 },
+            { x: 124, y: 60 },
+
+            // Third row (5 tulips)
+            { x: 64, y: 90 },
+            { x: 80, y: 80 },
+            { x: 100, y: 70 },
+            { x: 120, y: 80 },
+            { x: 136, y: 90 },
+
+            // Fourth row (4 tulips)
+            { x: 76, y: 120 },
+            { x: 88, y: 110 },
+            { x: 112, y: 110 },
+            { x: 124, y: 120 },
+
+            // Bottom row (3 tulips)
+            { x: 88, y: 150 },
+            { x: 100, y: 130 },
+            { x: 112, y: 150 },
+
+            // Fill gaps (2 tulips)
+            { x: 100, y: 190 },
+            { x: 52, y: 140 },
+            { x: 148, y: 140 }
         ];
 
-        positions.forEach((pos, index) => {
-            const rose = document.createElement('div');
-            rose.className = 'rose';
-            rose.innerHTML = '🌹';
-            rose.style.left = pos.x + 'px';
-            rose.style.top = pos.y + 'px';
-            rose.style.fontSize = pos.size + 'px';
-            rose.dataset.index = index;
-            rose.onclick = (e) => selectRose(index, e);
+        positions.slice(0, numberOfTulips).forEach((pos, index) => {
+            const tulip = document.createElement('div');
+            tulip.className = 'tulip';
+            
+            const stemDiv = document.createElement('div');
+            stemDiv.className = 'tulip-stem';
+            
+            const flowerDiv = document.createElement('div');
+            flowerDiv.className = 'tulip-flower';
+            flowerDiv.innerHTML = tulipColors[index % tulipColors.length];
+            
+            tulip.appendChild(stemDiv);
+            tulip.appendChild(flowerDiv);
+            
+            tulip.style.left = pos.x + 'px';
+            tulip.style.top = pos.y + 'px';
+            tulip.dataset.index = index;
+            tulip.onclick = (e) => selectTulip(index, e);
 
-            rosesLayer.appendChild(rose);
+            tulipsContainer.appendChild(tulip);
         });
     }
 
-    // Handle rose selection
-    function selectRose(index, event) {
+    // Handle tulip selection
+    function selectTulip(index, event) {
         if (unlocked) return;
 
-        if (index === correctRose) {
+        if (index === correctTulip) {
             unlocked = true;
-            event.target.closest('.rose').style.opacity = '0';
+            event.target.closest('.tulip').style.opacity = '0';
             triggerExplosion();
             setTimeout(() => {
                 messageModal.classList.add('show');
             }, 800);
         } else {
-            event.target.closest('.rose').classList.add('wrong');
+            event.target.closest('.tulip').classList.add('wrong');
             setTimeout(() => {
-                event.target.closest('.rose').classList.remove('wrong');
+                event.target.closest('.tulip').classList.remove('wrong');
             }, 400);
         }
     }
@@ -574,7 +626,7 @@
     }
 
     // Initialize
-    createRoses();
+    createTulips();
 </script>
 
 </body>
