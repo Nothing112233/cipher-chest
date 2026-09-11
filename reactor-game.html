@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Reactor of Love</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 700px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 20, 147, 0.8);
+            color: #ff1493;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            color: #ffb6d9;
+            font-style: italic;
+        }
+
+        .reactor-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .reactor {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle at 30% 30%, #00ff88, #00cc66);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.8), inset 0 0 30px rgba(0, 100, 50, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 80px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(0, 255, 136, 0.8), inset 0 0 30px rgba(0, 100, 50, 0.5);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(0, 255, 136, 1), inset 0 0 40px rgba(0, 150, 70, 0.7);
+                transform: scale(1.05);
+            }
+        }
+
+        .reactor.exploding {
+            animation: explode 0.6s ease-out forwards;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 30px rgba(0, 255, 136, 0.8);
+            }
+            50% {
+                transform: scale(1.3);
+                box-shadow: 0 0 100px rgba(255, 100, 0, 1);
+            }
+            100% {
+                transform: scale(0.3);
+                box-shadow: 0 0 80px rgba(255, 200, 0, 0.6);
+                background: radial-gradient(circle at 30% 30%, #ffaa00, #ff6600);
+            }
+        }
+
+        .explosion-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #ff6b00, #ff0000);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .bouquet-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+        }
+
+        .roses-circle {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .rose {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            filter: drop-shadow(0 0 5px rgba(255, 105, 180, 0.5));
+            transition: transform 0.2s, filter 0.2s;
+        }
+
+        .rose:hover {
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 15px rgba(255, 105, 180, 1));
+        }
+
+        .rose.wrong {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .message-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .message-modal.show {
+            display: flex;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .message-content {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            padding: 50px;
+            border-radius: 15px;
+            max-width: 500px;
+            box-shadow: 0 10px 50px rgba(255, 20, 147, 0.5);
+            text-align: center;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-content h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .message-content p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #fff;
+            font-style: italic;
+            margin-bottom: 20px;
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-modal {
+            background: #fff;
+            color: #ff1493;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        .close-modal:hover {
+            transform: scale(1.05);
+        }
+
+        .hint {
+            margin-top: 30px;
+            font-size: 0.95em;
+            color: #ffb6d9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>💚 The Reactor of Love 💚</h1>
+    <p class="subtitle">Find the right rose to unlock the magic...</p>
+
+    <div class="reactor-container">
+        <div class="reactor" id="reactor">⚛️</div>
+        <div class="explosion-particles" id="particles"></div>
+    </div>
+
+    <div class="bouquet-container">
+        <div class="roses-circle" id="rosesCircle"></div>
+    </div>
+
+    <div class="hint">Click on a rose to find the special one 🌹</div>
+</div>
+
+<div class="message-modal" id="messageModal">
+    <div class="message-content">
+        <h2>💕 My Love 💕</h2>
+        <p>In this moment, surrounded by roses and the glow of our hearts, I want you to know how much you mean to me. You are my everything, my forever, my reason to smile.</p>
+        <p style="font-size: 1.1em; margin-top: 25px;">Let's escape together, grab your favorite snacks and drink, and lose ourselves in our movie. Just you and me, princess.</p>
+        <p style="font-size: 1.3em; margin-top: 25px;">I love you so much. 😘❣️</p>
+        <button class="close-modal" onclick="closeModal()">Close Your Eyes & Kiss Me 💋</button>
+    </div>
+</div>
+
+<script>
+    const reactor = document.getElementById('reactor');
+    const rosesCircle = document.getElementById('rosesCircle');
+    const messageModal = document.getElementById('messageModal');
+    const particlesContainer = document.getElementById('particles');
+    
+    const numberOfRoses = 20;
+    const correctRose = Math.floor(Math.random() * numberOfRoses);
+    let unlocked = false;
+
+    // Create roses in a circular arrangement
+    function createRoses() {
+        const radius = 150;
+        const angleStep = (2 * Math.PI) / numberOfRoses;
+
+        for (let i = 0; i < numberOfRoses; i++) {
+            const angle = angleStep * i;
+            const x = Math.cos(angle) * radius;
+            const y = Math.sin(angle) * radius;
+
+            const rose = document.createElement('div');
+            rose.className = 'rose';
+            rose.innerHTML = '🌹';
+            rose.style.left = `calc(50% + ${x}px - 30px)`;
+            rose.style.top = `calc(50% + ${y}px - 30px)`;
+            rose.dataset.index = i;
+            rose.onclick = (e) => selectRose(i, e);
+
+            rosesCircle.appendChild(rose);
+        }
+    }
+
+    // Handle rose selection
+    function selectRose(index, event) {
+        if (unlocked) return;
+
+        if (index === correctRose) {
+            unlocked = true;
+            event.target.closest('.rose').style.opacity = '0';
+            triggerExplosion();
+            setTimeout(() => {
+                messageModal.classList.add('show');
+            }, 600);
+        } else {
+            event.target.closest('.rose').classList.add('wrong');
+            setTimeout(() => {
+                event.target.closest('.rose').classList.remove('wrong');
+            }, 400);
+        }
+    }
+
+    // Explosion effect
+    function triggerExplosion() {
+        reactor.classList.add('exploding');
+        createExplosionParticles();
+    }
+
+    // Create explosion particles
+    function createExplosionParticles() {
+        for (let i = 0; i < 15; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            const angle = (Math.random() * Math.PI * 2);
+            const velocity = 3 + Math.random() * 5;
+            const vx = Math.cos(angle) * velocity;
+            const vy = Math.sin(angle) * velocity;
+
+            particle.style.left = '50%';
+            particle.style.top = '50%';
+            particle.style.opacity = '1';
+
+            particlesContainer.appendChild(particle);
+
+            let x = 0, y = 0;
+            const animate = () => {
+                x += vx;
+                y += vy;
+                particle.style.transform = `translate(${x}px, ${y}px)`;
+                particle.style.opacity = Math.max(0, 1 - (Math.abs(x) + Math.abs(y)) / 300);
+
+                if (Math.abs(x) < 200 && Math.abs(y) < 200) {
+                    requestAnimationFrame(animate);
+                } else {
+                    particle.remove();
+                }
+            };
+            animate();
+        }
+    }
+
+    // Close modal
+    function closeModal() {
+        messageModal.classList.remove('show');
+    }
+
+    // Initialize
+    createRoses();
+</script>
+
+</body>
+</html>
